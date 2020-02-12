@@ -4,5 +4,6 @@ module.exports = {
   mongoURI: process.env.MONGO_URI,
   mongoUser: process.env.MONGO_USER,
   mongoSecret: process.env.MONGO_SECRET,
-  cookieKey: process.env.COOKIE_KEY
+  cookieKey: process.env.COOKIE_KEY,
+  redisUrl: process.env.REDIS_URL
 };
