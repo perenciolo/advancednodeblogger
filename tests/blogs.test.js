@@ -8,7 +8,7 @@ const defaultContent = 'My Content';
 
 beforeEach(async () => {
   page = await Page.build();
-  await page.goto('localhost:3000');
+  await page.goto('http://localhost:3000');
 });
 
 afterEach(async () => {
@@ -65,5 +65,24 @@ describe('When logged in', () => {
       expect(titleError).toEqual(requireStmt);
       expect(contentError).toEqual(requireStmt);
     });
+  });
+});
+
+describe('User is not logged in', () => {
+  const actions = [
+    { method: 'get', path: '/api/blogs' },
+    {
+      method: 'post',
+      path: '/api/blogs',
+      data: { title: defaultTitle, content: defaultContent }
+    }
+  ];
+
+  test('blog related actions are prohibited', async () => {
+    const results = await page.execRequests(actions);
+
+    for (let result of results) {
+      expect(result).toEqual({ error: 'You must log in!' });
+    }
   });
 });

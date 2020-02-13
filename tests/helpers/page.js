@@ -29,7 +29,7 @@ class Page {
 
     await this.page.setCookie({ name: 'session', value: session });
     await this.page.setCookie({ name: 'session.sig', value: sig });
-    await this.page.goto('localhost:3000/blogs');
+    await this.page.goto('http://localhost:3000/blogs');
     const logoutBtn = `a[href='/auth/logout']`;
     await this.page.waitFor(logoutBtn);
   }
@@ -38,6 +38,47 @@ class Page {
     if (!selector) return null;
 
     return this.page.$eval(selector, el => el.innerHTML);
+  }
+
+  get({ path }) {
+    return this.page.evaluate(async _path => {
+      const res = await fetch(_path, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      return res.json();
+    }, path);
+  }
+
+  post(meta) {
+    if (typeof meta !== 'object') return null;
+
+    return this.page.evaluate(async ({ path, data }) => {
+      const res = await fetch(path, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      return res.json();
+    }, meta);
+  }
+
+  execRequests(actions) {
+    if (typeof actions !== 'object' || !actions.length) return null;
+
+    return Promise.all(
+      actions.map(({ method, path, data }) => {
+        return this[method]({ path, data });
+      })
+    );
   }
 }
 
