@@ -17,3 +17,7 @@ Starting project for a blogging in nodejs
   ```
   docker run -d -p 6379:6379 --name advnc-redis redis
   ```
+
+## CI
+
+this project has configured Travis CI continuous integration.
