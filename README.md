@@ -1,5 +1,7 @@
 # AdvancedNodeStarter
 
+<img src="https://travis-ci.org/perenciolo/advancednodeblogger.svg?branch=master" alt="build:passed"/>
+
 Starting project for a blogging in nodejs
 
 ## Docker building commands
